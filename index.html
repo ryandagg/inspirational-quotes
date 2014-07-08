@@ -7,9 +7,33 @@
   <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
-	
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-  <script src="main.js"></script>
+	<div class="main-wrapper">
+		<h1>Inspirational Quotes</h1>
+
+		<div class="quote-input-block">
+			<div = class="quote-text-input">
+				<input type="text-field" placeholder="Input quote here">
+			</div>
+			<div = class="author-text-input">
+				<input type="text-field" placeholder="Input author's name here">
+			</div>
+			<div = class="rating-input">
+				 <span><input type="radio" name="rating" id="str5" value="5"><label for="str5"></label></span>
+			    <span><input type="radio" name="rating" id="str4" value="4"><label for="str4"></label></span>
+			    <span><input type="radio" name="rating" id="str3" value="3"><label for="str3"></label></span>
+			    <span><input type="radio" name="rating" id="str2" value="2"><label for="str2"></label></span>
+			    <span><input type="radio" name="rating" id="str1" value="1"><label for="str1"></label></span>
+			</div>
+			<button class="submit-button">Submit</button>
+		</div>
+
+		<div class="quotes-main">
+			<!-- jQuery appends here -->
+		</div>
+
+	</div>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+	<script src="main.js"></script>
 
 </body>
 </html>
