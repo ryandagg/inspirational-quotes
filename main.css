@@ -1,0 +1,32 @@
+.quotes-main {
+	/*display: inline-block;
+	height: 20%;*/
+	padding-left: 15%;
+	padding-right: 15%;
+	padding-top: 5%;
+
+}
+
+.quote-block {
+	border: 2px solid gray;
+	padding: 2%;
+}
+
+.an-author {
+	/*left: 5%;*/
+	margin-left: 4%;
+	display: inline;
+	text-decoration: underline;
+	color: blue;
+}
+
+.an-author:hover {
+	color: green;
+	cursor: pointer;
+}
+
+.a-rating {
+	padding-left: 50%;
+	display: inline-block;
+	/*width: 40%;*/
+}
