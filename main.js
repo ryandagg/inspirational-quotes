@@ -12,10 +12,28 @@ var quoteSpace = (function(){
 		this.quotes.push(new createQuote(text, author, rating));
 	};
 
+	// sortQuotes = function() {
+	// 	this.quotes = _.sortBy(this.quotes, function(a, b) {
+	// 		return this.quotes[b].rating - this.quotes[a].rating;
+	// 	})
+	// };
+
+	populateQuotes = function() {
+		for (var i = 0; i < this.quotes.length; i++) {
+			$(".quotes-main").append(
+				"<div class = 'quote-block'>" + 
+				"<p class = 'a-quote'>" + this.quotes[i].text + "</p>" + 
+				"<p class = 'an-author'>" + this.quotes[i].author + "</p>" +
+				"</div>"
+			)
+		}
+	};
+
 	return {
 		quotes: quotes,
-		addQuote: addQuote
-	}
+		addQuote: addQuote,
+		populateQuotes: populateQuotes
+	};
 
 
 })();
@@ -33,17 +51,19 @@ console.log(quoteSpace.quotes)
 
 
 $(document).on('ready', function() {
-	for (var i = 0; i < quoteSpace.quotes.length; i++) {
-		$(".quotes-main").append(
-			"<div class = 'quote-block'>" + 
-			"<p class = 'a-quote'>" + quoteSpace.quotes[i].text + "</p>" + 
-			"<p class = 'an-author'>" + quoteSpace.quotes[i].author + "</p>" +
-			"</div>"
-		)
-	}
+	quoteSpace.populateQuotes();
+	// replace this with a function
+	// for (var i = 0; i < quoteSpace.quotes.length; i++) {
+	// 	$(".quotes-main").append(
+	// 		"<div class = 'quote-block'>" + 
+	// 		"<p class = 'a-quote'>" + quoteSpace.quotes[i].text + "</p>" + 
+	// 		"<p class = 'an-author'>" + quoteSpace.quotes[i].author + "</p>" +
+	// 		"</div>"
+	// 	)
+	// }
 
 	$(document).on("click", ".submit-button", function() {
 		// THIS IS NOT WORKING
-		quoteSpace.addQuote($(".quote-text-input input").va(), $(".author-text-input input").va(), $(".rating-input").attr("value"))
+		quoteSpace.addQuote($(".quote-text-input").val(), $(".author-text-input").val(), $('input:radio[name=rating]:checked').val())
 	})
 });
