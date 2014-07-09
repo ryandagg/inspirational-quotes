@@ -64,3 +64,29 @@
 	height: 80%;
 	background-color: #aaa;
 }
+
+.random-button {
+	margin-left: 30%;
+}
+
+.random-popup {
+	display: block;
+	width: 70%;
+	height: 15%;
+	background-color: #eee;
+	position: absolute;
+	z-index: 2;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+	border: 2px solid blue;
+}
+
+.random-close-button {
+	/*margin-top: 90%;*/
+	position: absolute;
+	left: 102%;
+	bottom: 32%;
+}

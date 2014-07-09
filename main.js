@@ -1,5 +1,5 @@
 /* paste-bin:
-" + (newArray[i].rating === n ? "checked = 'true'" : "") + "
+
 */
 
 var QuoteSpace = (function(){
@@ -40,11 +40,11 @@ var QuoteSpace = (function(){
 					"<p class = 'a-quote'>" + newArray[i].text + "</p>" + 
 					"<a class = 'an-author'>" + newArray[i].author + "</a>" +
 					"<div class='rating-input'>Rate this quote: " +
-						"<input type='radio' name='rating" + i + "' value='1'" + (newArray[i].rating === 1 ? "checked = 'true'" : "") + "><span>1</span>" +
-					    "<input type='radio' name='rating" + i + "' value='2'" + (newArray[i].rating === 2 ? "checked = 'true'" : "") + "><span>2</span>" +
-					    "<input type='radio' name='rating" + i + "' value='3'" + (newArray[i].rating === 3 ? "checked = 'true'" : "") + "><span>3</span>" +
-					    "<input type='radio' name='rating" + i + "' value='4'" + (newArray[i].rating === 4 ? "checked = 'true'" : "") + "><span>4</span>" +
-					    "<input type='radio' name='rating" + i + "' value='5'" + (newArray[i].rating === 5 ? "checked = 'true'" : "") + "><span>5</span>" +
+						"<input type='radio' name='rating" + i + "' value='1'" + (newArray[i].rating == 1 ? "checked = 'true'" : "") + "><span>1</span>" +
+					    "<input type='radio' name='rating" + i + "' value='2'" + (newArray[i].rating == 2 ? "checked = 'true'" : "") + "><span>2</span>" +
+					    "<input type='radio' name='rating" + i + "' value='3'" + (newArray[i].rating == 3 ? "checked = 'true'" : "") + "><span>3</span>" +
+					    "<input type='radio' name='rating" + i + "' value='4'" + (newArray[i].rating == 4 ? "checked = 'true'" : "") + "><span>4</span>" +
+					    "<input type='radio' name='rating" + i + "' value='5'" + (newArray[i].rating == 5 ? "checked = 'true'" : "") + "><span>5</span>" +
 					"</div>" +
 					"<button class = 'delete-button'>delete</button>" +
 				"</div>"
@@ -58,11 +58,21 @@ var QuoteSpace = (function(){
 		})
 	};
 
+	var indexOfObject = function(array, keyword, value) {
+		for (var i = 0; i < array.length; i++) {
+			if (array[i][keyword] === value) {
+				return i;
+			}
+		};
+		return -1;
+	}
+
 	return {
 		quotes: quotes,
 		addQuote: addQuote,
 		populateQuotes: populateQuotes,
 		filterQuotes: filterQuotes,
+		indexOfObject: indexOfObject,
 	};
 
 })();
@@ -121,14 +131,23 @@ $(document).on('ready', function() {
 	// input rating for quote 
 	$(document).on("click", ".rating-input input", function() {
 		var radioName = $(this).attr("name");
+		// console.log(radioName);
 		var radioValue = $("input[name=" + radioName + "]:checked").val();
+		// console.log(radioValue);
 		var quoteText = $(this).closest(".quote-block").find(".a-quote").text()
-	// THIS IS NOT WORKING!!!
-		var index = _.indexOf(QuoteSpace.quotes, function(obj) {
-			return obj.text === quoteText;
-		})
-		console.log(index)
+		// console.log(quoteText);
+		var index = QuoteSpace.indexOfObject(QuoteSpace.quotes, "text", quoteText);
 		QuoteSpace.quotes[index].rating = radioValue;
 		QuoteSpace.populateQuotes(".quotes-main", QuoteSpace.quotes);
+	})
+
+	$(document).on("click", ".random-button", function() {
+		$(".main-wrapper").prepend("<div class = 'random-popup'></div>");
+		QuoteSpace.populateQuotes(".random-popup", [QuoteSpace.quotes[Math.floor(Math.random() * (QuoteSpace.quotes.length - 1))]])
+		$(".random-popup").append("<button class ='random-close-button'> close</button>");
+	})
+
+	$(document).on("click", ".random-close-button", function() {
+		$(".random-popup").remove();
 	})
 });
