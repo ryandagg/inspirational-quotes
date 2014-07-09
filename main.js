@@ -1,10 +1,13 @@
 /* paste-bin:
+localStorage.setItem("lastname", "Smith")
+JSON.stringify({});
+JSON.parse(localStorage.getItem("QuoteSpace.quotes")) ||
 
 */
 
 var QuoteSpace = (function(){
 
-	var quotes = [];
+	var quotes = JSON.parse(localStorage.getItem("QuoteSpace.quotes")) || [];
 
 	var Quote = function(text, author, rating) {
 		this.text = text;
@@ -14,6 +17,9 @@ var QuoteSpace = (function(){
 
 	var addQuote = function(text, author, rating) {
 		quotes.push(new Quote(text, author, rating));
+		// localStorage.removeItem("QuoteSpace.quotes")
+		console.log(quotes)
+		localStorage.setItem("QuoteSpace.quotes", JSON.stringify(QuoteSpace.quotes));
 	};
 
 	// sorts the quotes by rating
@@ -22,14 +28,6 @@ var QuoteSpace = (function(){
 			return obj.rating;
 		}).reverse();
 	};
-
-	// var createRadio = function(num) {
-	// 	var string = ''
-	// 	for (var j = 0; j < num; j++) {
-	// 		string += 
-	// 	}
-	// 	return string;
-	// }
 
 	var populateQuotes = function(div, array) {
 		var newArray = sortByRating(array);
@@ -40,17 +38,19 @@ var QuoteSpace = (function(){
 					"<p class = 'a-quote'>" + newArray[i].text + "</p>" + 
 					"<a class = 'an-author'>" + newArray[i].author + "</a>" +
 					"<div class='rating-input'>Rate this quote: " +
-						"<input type='radio' name='rating" + i + "' value='1'" + (newArray[i].rating == 1 ? "checked = 'true'" : "") + "><span>1</span>" +
-					    "<input type='radio' name='rating" + i + "' value='2'" + (newArray[i].rating == 2 ? "checked = 'true'" : "") + "><span>2</span>" +
-					    "<input type='radio' name='rating" + i + "' value='3'" + (newArray[i].rating == 3 ? "checked = 'true'" : "") + "><span>3</span>" +
-					    "<input type='radio' name='rating" + i + "' value='4'" + (newArray[i].rating == 4 ? "checked = 'true'" : "") + "><span>4</span>" +
-					    "<input type='radio' name='rating" + i + "' value='5'" + (newArray[i].rating == 5 ? "checked = 'true'" : "") + "><span>5</span>" +
+						"<input type='radio' name='rating" + i + "' value='1'" + (+newArray[i].rating === 1 ? "checked = 'true'" : "") + "><span>1</span>" +
+					    "<input type='radio' name='rating" + i + "' value='2'" + (+newArray[i].rating === 2 ? "checked = 'true'" : "") + "><span>2</span>" +
+					    "<input type='radio' name='rating" + i + "' value='3'" + (+newArray[i].rating === 3 ? "checked = 'true'" : "") + "><span>3</span>" +
+					    "<input type='radio' name='rating" + i + "' value='4'" + (+newArray[i].rating === 4 ? "checked = 'true'" : "") + "><span>4</span>" +
+					    "<input type='radio' name='rating" + i + "' value='5'" + (+newArray[i].rating === 5 ? "checked = 'true'" : "") + "><span>5</span>" +
 					"</div>" +
 					"<button class = 'delete-button'>delete</button>" +
 				"</div>"
 			)
 		}
 	};
+
+
 
 	var filterQuotes = function(array, author) {
 		return array.filter(function(obj) {
@@ -77,13 +77,16 @@ var QuoteSpace = (function(){
 
 })();
 
-QuoteSpace.addQuote("The Edge... there is no honest way to explain it because the only people who really know where it is are the ones who have gone over.", "Hunter S. Thompson", 5)
-QuoteSpace.addQuote("America... just a nation of two hundred million used car salesmen with all the money we need to buy guns and no qualms about killing anybody else in the world who tries to make us uncomfortable.", "Hunter S. Thompson", 1)
-QuoteSpace.addQuote("In a closed society where everybody's guilty, the only crime is getting caught. In a world of thieves, the only final sin is stupidity.", "Hunter S. Thompson", 4)
-QuoteSpace.addQuote("For every moment of triumph, for every instance of beauty, many souls must be trampled.", "Hunter S. Thompson", 3)
-QuoteSpace.addQuote("Don’t ask what the world needs. Ask what makes you come alive, and go do it. Because what the world needs is people who have come alive.", "Howard Thurman", 5)
+// QuoteSpace.quotes = JSON.parse(localStorage.getItem("QuoteSpace.quotes"));
 
-// console.log(QuoteSpace.quotes)
+if(QuoteSpace.quotes[0] === undefined) {
+	QuoteSpace.addQuote("The Edge... there is no honest way to explain it because the only people who really know where it is are the ones who have gone over.", "Hunter S. Thompson", 5)
+	QuoteSpace.addQuote("America... just a nation of two hundred million used car salesmen with all the money we need to buy guns and no qualms about killing anybody else in the world who tries to make us uncomfortable.", "Hunter S. Thompson", 1)
+	QuoteSpace.addQuote("In a closed society where everybody's guilty, the only crime is getting caught. In a world of thieves, the only final sin is stupidity.", "Hunter S. Thompson", 4)
+	QuoteSpace.addQuote("For every moment of triumph, for every instance of beauty, many souls must be trampled.", "Hunter S. Thompson", 3)
+	QuoteSpace.addQuote("Don’t ask what the world needs. Ask what makes you come alive, and go do it. Because what the world needs is people who have come alive.", "Howard Thurman", 5)
+}
+
 
 
 $(document).on('ready', function() {
@@ -93,6 +96,7 @@ $(document).on('ready', function() {
 	$(document).on("click", ".submit-button", function() {
 		// submit button functionality
 		QuoteSpace.addQuote($(".quote-text-input").val(), $(".author-text-input").val(), null);
+		console.log(QuoteSpace.quotes)
 		QuoteSpace.populateQuotes(".quotes-main", QuoteSpace.quotes);
 	})
 
@@ -123,6 +127,7 @@ $(document).on('ready', function() {
 			return obj.text === $(that).closest(".quote-block").find(".a-quote").text()
 		});
 		QuoteSpace.populateQuotes(".quotes-main", QuoteSpace.quotes);
+		localStorage.setItem("QuoteSpace.quotes", JSON.stringify(QuoteSpace.quotes))
 	})
 
 	$(document).on("click", ".cancel-button", function() {
@@ -139,6 +144,7 @@ $(document).on('ready', function() {
 		var index = QuoteSpace.indexOfObject(QuoteSpace.quotes, "text", quoteText);
 		QuoteSpace.quotes[index].rating = radioValue;
 		QuoteSpace.populateQuotes(".quotes-main", QuoteSpace.quotes);
+		localStorage.setItem("QuoteSpace.quotes", JSON.stringify(QuoteSpace.quotes))
 	})
 
 	$(document).on("click", ".random-button", function() {
