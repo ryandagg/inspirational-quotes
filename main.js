@@ -1,3 +1,7 @@
+/* paste-bin:
+" + (newArray[i].rating === n ? "checked = 'true'" : "") + "
+*/
+
 var QuoteSpace = (function(){
 
 	var quotes = [];
@@ -19,6 +23,14 @@ var QuoteSpace = (function(){
 		}).reverse();
 	};
 
+	// var createRadio = function(num) {
+	// 	var string = ''
+	// 	for (var j = 0; j < num; j++) {
+	// 		string += 
+	// 	}
+	// 	return string;
+	// }
+
 	var populateQuotes = function(div, array) {
 		var newArray = sortByRating(array);
 		$(div).empty();
@@ -27,7 +39,14 @@ var QuoteSpace = (function(){
 				"<div class = 'quote-block'>" + 
 					"<p class = 'a-quote'>" + newArray[i].text + "</p>" + 
 					"<a class = 'an-author'>" + newArray[i].author + "</a>" +
-					"<div class = 'a-rating'>" + newArray[i].rating + " stars</div>" +
+					"<div class='rating-input'>Rate this quote: " +
+						"<input type='radio' name='rating" + i + "' value='1'" + (newArray[i].rating === 1 ? "checked = 'true'" : "") + "><span>1</span>" +
+					    "<input type='radio' name='rating" + i + "' value='2'" + (newArray[i].rating === 2 ? "checked = 'true'" : "") + "><span>2</span>" +
+					    "<input type='radio' name='rating" + i + "' value='3'" + (newArray[i].rating === 3 ? "checked = 'true'" : "") + "><span>3</span>" +
+					    "<input type='radio' name='rating" + i + "' value='4'" + (newArray[i].rating === 4 ? "checked = 'true'" : "") + "><span>4</span>" +
+					    "<input type='radio' name='rating" + i + "' value='5'" + (newArray[i].rating === 5 ? "checked = 'true'" : "") + "><span>5</span>" +
+					"</div>" +
+					"<button class = 'delete-button'>delete</button>" +
 				"</div>"
 			)
 		}
@@ -46,7 +65,6 @@ var QuoteSpace = (function(){
 		filterQuotes: filterQuotes,
 	};
 
-
 })();
 
 QuoteSpace.addQuote("The Edge... there is no honest way to explain it because the only people who really know where it is are the ones who have gone over.", "Hunter S. Thompson", 5)
@@ -64,11 +82,53 @@ $(document).on('ready', function() {
 	// quote submit button handler
 	$(document).on("click", ".submit-button", function() {
 		// submit button functionality
-		QuoteSpace.addQuote($(".quote-text-input").val(), $(".author-text-input").val(), $('input:radio[name=rating]:checked').val());
+		QuoteSpace.addQuote($(".quote-text-input").val(), $(".author-text-input").val(), null);
 		QuoteSpace.populateQuotes(".quotes-main", QuoteSpace.quotes);
 	})
+
+	// filter by author link
 	$(document).on("click", ".an-author", function() {
 		QuoteSpace.populateQuotes(".quotes-main", QuoteSpace.filterQuotes(QuoteSpace.quotes, $(this).text()))
+		$(".return-button").toggle();
 	})
 
+	// remove filter by author
+	$(document).on("click", ".return-button", function() {
+		$(".return-button").toggle();
+		QuoteSpace.populateQuotes(".quotes-main", QuoteSpace.quotes);
+	})
+
+	$(document).on("click", ".delete-button", function() {
+		$(this).closest(".quote-block").prepend(
+			"<div class = 'delete-popup'>" +
+				"<button = class = 'confirm-button'>Confirm</button>" +
+				"<button class = 'cancel-button'>cancel</button>" +
+			"</div>"
+			)
+	})
+
+	$(document).on("click", ".confirm-button", function() {
+		var that = this;
+		QuoteSpace.quotes = _.reject(QuoteSpace.quotes, function(obj) {
+			return obj.text === $(that).closest(".quote-block").find(".a-quote").text()
+		});
+		QuoteSpace.populateQuotes(".quotes-main", QuoteSpace.quotes);
+	})
+
+	$(document).on("click", ".cancel-button", function() {
+		$(this).closest(".delete-popup").remove();
+	})
+	// input rating for quote 
+	$(document).on("click", ".rating-input input", function() {
+		var radioName = $(this).attr("name");
+		var radioValue = $("input[name=" + radioName + "]:checked").val();
+		var quoteText = $(this).closest(".quote-block").find(".a-quote").text()
+	// THIS IS NOT WORKING!!!
+		var index = _.indexOf(QuoteSpace.quotes, function(obj) {
+			return obj.text === quoteText;
+		})
+		console.log(index)
+		QuoteSpace.quotes[index].rating = radioValue;
+		QuoteSpace.populateQuotes(".quotes-main", QuoteSpace.quotes);
+	})
 });

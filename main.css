@@ -10,14 +10,16 @@
 .quote-block {
 	border: 2px solid gray;
 	padding: 2%;
+	position: relative;
 }
 
 .an-author {
 	/*left: 5%;*/
 	margin-left: 4%;
-	display: inline;
+	display: inline-block;
 	text-decoration: underline;
 	color: blue;
+	width: 30%;
 }
 
 .an-author:hover {
@@ -26,7 +28,39 @@
 }
 
 .a-rating {
-	padding-left: 50%;
+	/*padding-left: 50%;*/
 	display: inline-block;
 	/*width: 40%;*/
+}
+
+.return-button {
+	display: none;
+	margin-left: 40%;
+}
+
+.rating-input {
+	padding-left: 10%;
+	display: inline-block;
+	width: 40%;
+	/*text-align: left;*/
+}
+
+.rating-input input {
+	margin-left: 0.65%;
+}
+
+.rating-input span {
+	margin-left: 0.65%;
+}
+
+.delete-button {
+	margin-left: 5%;
+}
+
+.delete-popup {
+	position: absolute;
+	display: block;
+	width: 80%;
+	height: 80%;
+	background-color: #aaa;
 }
