@@ -1,3 +1,10 @@
+.bg-img {
+	position: absolute;
+	z-index: -1;
+	height: 100%;
+	width: 100%;
+}
+
 .quotes-main {
 	/*display: inline-block;
 	height: 20%;*/
@@ -13,6 +20,10 @@
 	position: relative;
 }
 
+.a-quote {
+	background-color: #fff;
+}
+
 .an-author {
 	/*left: 5%;*/
 	margin-left: 4%;
@@ -20,6 +31,7 @@
 	text-decoration: underline;
 	color: blue;
 	width: 30%;
+	background-color: #fff;
 }
 
 .an-author:hover {
@@ -31,6 +43,7 @@
 	/*padding-left: 50%;*/
 	display: inline-block;
 	/*width: 40%;*/
+	background-color: #fff;
 }
 
 .return-button {
