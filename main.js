@@ -133,14 +133,12 @@ $(document).on('ready', function() {
 	$(document).on("click", ".cancel-button", function() {
 		$(this).closest(".delete-popup").remove();
 	})
+	
 	// input rating for quote 
 	$(document).on("click", ".rating-input input", function() {
 		var radioName = $(this).attr("name");
-		// console.log(radioName);
 		var radioValue = $("input[name=" + radioName + "]:checked").val();
-		// console.log(radioValue);
 		var quoteText = $(this).closest(".quote-block").find(".a-quote").text()
-		// console.log(quoteText);
 		var index = QuoteSpace.indexOfObject(QuoteSpace.quotes, "text", quoteText);
 		QuoteSpace.quotes[index].rating = radioValue;
 		QuoteSpace.populateQuotes(".quotes-main", QuoteSpace.quotes);
