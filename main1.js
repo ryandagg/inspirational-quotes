@@ -19,10 +19,10 @@ var QuoteSpace = (function(){
 
 	var addQuote = function(text, author, rating) {
 		// quotes and QuoteSpace.quotes ARE NOT THE SAME on the line below
-		QuoteSpace.quotes.push(new Quote(text, author, rating));
+		quotes.push(new Quote(text, author, rating));
 		// localStorage.removeItem("QuoteSpace.quotes")
 		console.log(quotes)
-		localStorage.setItem("QuoteSpace.quotes", JSON.stringify(QuoteSpace.quotes));
+		localStorage.setItem("QuoteSpace.quotes", JSON.stringify(quotes));
 	};
 
 	// sorts the quotes by rating
@@ -34,8 +34,8 @@ var QuoteSpace = (function(){
 
 	var populateQuotes = function(div, array) {
 		// line 36 IS NOT WORKING the way I expect
-		QuoteSpace.quotes = sortByRating(array);
-		
+		newArray = sortByRating(array);
+
 		$(div).empty();
 		var sourceQuote = $("#quote-block-template").html();
 		var quoteTemplate = Handlebars.compile(sourceQuote);
@@ -43,8 +43,6 @@ var QuoteSpace = (function(){
 
 		Handlebars.registerHelper('checked', function(rating) {
 			iterator++;
-			// console.log(iterator % 5 + 1)
-			// console.log(rating + "|")
 			if ((iterator % 5 + 1) === Number(rating)) {
 				return "checked = true"
 			}
@@ -53,7 +51,7 @@ var QuoteSpace = (function(){
 			}
 		});
 
-		$(div).append(quoteTemplate(QuoteSpace))
+		$(div).append(quoteTemplate({quotes: newArray}))
 	};
 
 
