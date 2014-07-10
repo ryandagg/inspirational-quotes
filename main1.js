@@ -18,7 +18,8 @@ var QuoteSpace = (function(){
 	};
 
 	var addQuote = function(text, author, rating) {
-		quotes.push(new Quote(text, author, rating));
+		// quotes and QuoteSpace.quotes ARE NOT THE SAME on the line below
+		QuoteSpace.quotes.push(new Quote(text, author, rating));
 		// localStorage.removeItem("QuoteSpace.quotes")
 		console.log(quotes)
 		localStorage.setItem("QuoteSpace.quotes", JSON.stringify(QuoteSpace.quotes));
@@ -32,43 +33,27 @@ var QuoteSpace = (function(){
 	};
 
 	var populateQuotes = function(div, array) {
-		// line 36 IS NOT WORKING
-		quotes = sortByRating(array);
+		// line 36 IS NOT WORKING the way I expect
+		QuoteSpace.quotes = sortByRating(array);
+		
 		$(div).empty();
 		var sourceQuote = $("#quote-block-template").html();
 		var quoteTemplate = Handlebars.compile(sourceQuote);
 		var iterator = -1;
+
 		Handlebars.registerHelper('checked', function(rating) {
 			iterator++;
-			console.log(iterator % 5 + 1)
-			console.log(rating + "|")
+			// console.log(iterator % 5 + 1)
+			// console.log(rating + "|")
 			if ((iterator % 5 + 1) === Number(rating)) {
-				return "checked = 'true'"
+				return "checked = true"
 			}
 			else {
 				return ''
 			}
 		});
-		
 
 		$(div).append(quoteTemplate(QuoteSpace))
-
-		// for (var i = 0; i < newArray.length; i++) {
-		// 	$(div).append(
-		// 		"<div class = 'quote-block'>" + 
-		// 			"<p class = 'a-quote'>" + newArray[i].text + "</p>" + 
-		// 			"<a class = 'an-author'>" + newArray[i].author + "</a>" +
-		// 			"<div class='rating-input'>Rate this quote: " +
-		// 				"<input type='radio' name='rating" + i + "' value='1'" + (+newArray[i].rating === 1 ? "checked = 'true'" : "") + "><span>1</span>" +
-		// 			    "<input type='radio' name='rating" + i + "' value='2'" + (+newArray[i].rating === 2 ? "checked = 'true'" : "") + "><span>2</span>" +
-		// 			    "<input type='radio' name='rating" + i + "' value='3'" + (+newArray[i].rating === 3 ? "checked = 'true'" : "") + "><span>3</span>" +
-		// 			    "<input type='radio' name='rating" + i + "' value='4'" + (+newArray[i].rating === 4 ? "checked = 'true'" : "") + "><span>4</span>" +
-		// 			    "<input type='radio' name='rating" + i + "' value='5'" + (+newArray[i].rating === 5 ? "checked = 'true'" : "") + "><span>5</span>" +
-		// 			"</div>" +
-		// 			"<button class = 'delete-button'>delete</button>" +
-		// 		"</div>"
-		// 	)
-		// }
 	};
 
 
@@ -158,9 +143,13 @@ $(document).on('ready', function() {
 	// input rating for quote 
 	$(document).on("click", ".rating-input input", function() {
 		var radioName = $(this).attr("name");
+		console.log("radioName: " + radioName);
 		var radioValue = $("input[name=" + radioName + "]:checked").val();
+		console.log("radioValue: " + radioValue);
 		var quoteText = $(this).closest(".quote-block").find(".a-quote").text()
+		console.log("quoteText: " + quoteText);
 		var index = QuoteSpace.indexOfObject(QuoteSpace.quotes, "text", quoteText);
+		console.log(index);
 		QuoteSpace.quotes[index].rating = radioValue;
 		QuoteSpace.populateQuotes(".quotes-main", QuoteSpace.quotes);
 		localStorage.setItem("QuoteSpace.quotes", JSON.stringify(QuoteSpace.quotes))
