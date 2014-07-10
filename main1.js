@@ -32,11 +32,26 @@ var QuoteSpace = (function(){
 	};
 
 	var populateQuotes = function(div, array) {
-		// var newArray = sortByRating(array);
+		// line 36 IS NOT WORKING
+		quotes = sortByRating(array);
 		$(div).empty();
 		var sourceQuote = $("#quote-block-template").html();
 		var quoteTemplate = Handlebars.compile(sourceQuote);
-		$(".quotes-main").append(quoteTemplate(QuoteSpace))
+		var iterator = -1;
+		Handlebars.registerHelper('checked', function(rating) {
+			iterator++;
+			console.log(iterator % 5 + 1)
+			console.log(rating + "|")
+			if ((iterator % 5 + 1) === Number(rating)) {
+				return "checked = 'true'"
+			}
+			else {
+				return ''
+			}
+		});
+		
+
+		$(div).append(quoteTemplate(QuoteSpace))
 
 		// for (var i = 0; i < newArray.length; i++) {
 		// 	$(div).append(

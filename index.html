@@ -37,15 +37,15 @@
 
 	<script id="quote-block-template" type="text/x-handlebars-template">
 		{{#quotes}}
-			<div class = 'quote-block'> 
+			<div class = 'quote-block' name = 'rating={{rating}}'> 
 				<p class= 'a-quote'> {{text}} </p> 
 				<a class= 'an-author'> {{author}} </a>
 				<div class= 'rating-input'>Rate this quote: 
-					<input type='radio' name='rating' value='1'><span>1</span>
-				    <input type='radio' name='rating' value='2'><span>2</span>
-				    <input type='radio' name='rating' value='3'><span>3</span>
-				    <input type='radio' name='rating' value='4'><span>4</span>
-				    <input type='radio' name='rating' value='5'><span>5</span>
+					<input type='radio' name='rating{{@index}}' value='1' {{checked rating}}><span>1</span>
+				    <input type='radio' name='rating{{@index}}' value='2' {{checked rating}}><span>2</span>
+				    <input type='radio' name='rating{{@index}}' value='3' {{checked rating}}><span>3</span>
+				    <input type='radio' name='rating{{@index}}' value='4' {{checked rating}}><span>4</span>
+				    <input type='radio' name='rating{{@index}}' value='5' {{checked rating}}><span>5</span>
 				</div>
 				<button class = 'delete-button'>delete</button>
 			</div>
